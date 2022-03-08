@@ -1,0 +1,18 @@
+
+Functional interfaces provide target types for lambda expressions
+    and method references. Each functional interface has a single
+    abstract method, called the functional method for that functional
+    interface, to which the lambda expression's parameter and return
+    types are matched or adapted. Functional interfaces can provide a
+    target type in multiple contexts, such as assignment context,
+    method invocation, or cast context:
+
+https://docs.oracle.com/javase/8/docs/api/java/util/function/package-summary.html
+
+JDK 5.0 introduced Java Generics with the aim of reducing bugs
+    and adding an extra layer of abstraction over types.
+
+https://www.baeldung.com/java-generics
+
+
+
