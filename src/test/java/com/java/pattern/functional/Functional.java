@@ -1,6 +1,9 @@
 package com.java.pattern.functional;
 
 import org.junit.jupiter.api.Test;
+
+import javax.swing.text.html.Option;
+import java.util.Optional;
 import java.util.function.Function;
 
 import static com.java.pattern.functional.ShortToByteFunction.transformArray;
