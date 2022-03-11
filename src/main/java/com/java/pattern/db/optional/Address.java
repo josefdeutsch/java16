@@ -1,33 +1,49 @@
 package com.java.pattern.db.optional;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Objects;
 import java.util.Optional;
 
-public final class Address {
-    private final String addressLine;  // never null
-    private final String city;         // never null
-    private final String postcode;     // optional, thus may be null
+public final class Address<A,B,C> {
 
-    // constructor ensures non-null fields really are non-null
-    // optional field can just be stored directly, as null means optional
-    public Address(String addressLine, String city, String postcode) {
-        this.addressLine = Objects.requireNonNull(addressLine);
-        this.city = Objects.requireNonNull(city);
-        this.postcode = postcode;
+    private final A a;
+    private final B b;
+    private final C c;
+
+    @SuppressWarnings({"unchecked"})
+    public Address(
+            @NotNull A a,
+            @NotNull B b,
+            @Nullable C c){
+
+        this.a =
+                (A) Objects.requireNonNullElse(
+                        a,
+                        "com.java.pattern.db.optional.Address.addressLine must not be null");
+
+        this.b =
+                (B) Objects.requireNonNullElse(
+                        b,
+                        "com.java.pattern.db.optional.Address.addressLine must not be null");
+
+        this.c =
+                c;
     }
 
-    // normal getters
-    public String getAddressLine() { return addressLine; }
-    public String getCity() { return city; }
+    public @NotNull B getAddressLine() {
+        return b; }
 
-    // special getter for optional field
-    public Optional<String> getPostcode() {
-        return Optional.ofNullable(postcode);
+    public @NotNull C getCity() {
+        return c; }
+
+    public  @NotNull Optional<? extends C> getPostcode() {
+        return Optional.ofNullable(c);
     }
 
-    // return optional instead of null for business logic methods that may not find a result
-    public static <T> Optional<T> findAddress(T t) {
+    public static <T> @NotNull Optional<? super T> findAddress(
+            @Nullable T t) {
         return Optional.ofNullable(t);
-        // find the address, returning Optional.empty() if not found
     }
 }

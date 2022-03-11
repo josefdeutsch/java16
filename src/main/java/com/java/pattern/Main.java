@@ -1,5 +1,6 @@
 package com.java.pattern;
 
+import com.java.pattern.db.optional.Address;
 import com.java.pattern.generics.Box;
 import com.java.pattern.generics.Letter;
 import com.java.pattern.generics.Phone;
@@ -11,12 +12,15 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        Box<Phone> box = new Box<>();
-        box.set(new Phone("Samsung"));
-        System.out.println(box.get());
+        Address address =
+                new Address(
+                        null,
+                        "uschi",
+                        null);
 
-        Box<Letter> box2 = new Box<>();
-        box2.set(new Letter("Amigoscode"));
-        System.out.println(box2.get());
+        System.out.println(address.getAddressLine());
+        System.out.println(address.getCity());
+        System.out.println(address.getPostcode());
+
     }
 }
