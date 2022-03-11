@@ -2,6 +2,7 @@ package com.java.pattern.opt;
 
 import org.junit.jupiter.api.Test;
 import java.util.Optional;
+import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -92,5 +93,19 @@ public class Optionals {
         String nullName = null;
         String name = Optional.ofNullable(nullName).orElseGet(() -> "john");
         assertEquals("john", name);
+    }
+
+    @Test
+    public void mapValueToAnother_thenCorrect() {
+
+        Integer expected = 3;
+        Integer box = 2;
+
+        Integer actual =
+                Optional.of(box)
+                .map(value -> value +1)
+                .get();
+
+        assertEquals(expected, actual);
     }
 }

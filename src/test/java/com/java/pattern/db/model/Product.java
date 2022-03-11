@@ -6,7 +6,7 @@ import java.util.stream.Stream;
 /**
  * Created by Alex Vengr
  */
-public class Product {
+public final class Product {
 
     private int price;
 

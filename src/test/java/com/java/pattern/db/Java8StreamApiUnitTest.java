@@ -1,8 +1,7 @@
 package com.java.pattern.db;
 
-import org.junit.Before;
-import org.junit.Test;
-
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -12,22 +11,21 @@ import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.*;
 import com.java.pattern.db.model.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import static java.util.Arrays.asList;
 import static org.junit.Assert.*;
 
 public class Java8StreamApiUnitTest {
 
+    //https://www.youtube.com/watch?v=4BUKaazoYyg
+
     private long counter;
 
-    private static Logger log =
-            LoggerFactory.getLogger(Java8StreamApiUnitTest.class);
+    public static List<Product> productList;
 
-    private List<Product> productList;
-
-    @Before
-    public void init() {
-        productList = Arrays.asList(
+    @BeforeAll
+    public static void init() {
+        productList = asList(
                 new Product(23, "potatoes"),
                 new Product(14, "orange"),
                 new Product(13, "lemon"),
@@ -36,35 +34,49 @@ public class Java8StreamApiUnitTest {
     }
 
     @Test
-    public void checkPipeline_whenStreamOneElementShorter_thenCorrect() {
+    public void checkPipeline_whenStreamOneElementShorter_thenCorrect2() {
 
-        List<String> list = Arrays.asList("abc1", "abc2", "abc3");
-        long size = list.stream().skip(1)
-                .map(element -> element.substring(0, 3)).count();
+        String expected = "abc";
+        String actual = "abc";
 
-        assertEquals(list.size() - 1, size);
+        expected.substring(0,3);
+        assertEquals(expected.substring(0,3), actual);
     }
 
     @Test
-    public void checkPipeline_whenStreamOneElementShorter_thenCorrect2() {
+    public void checkPipeline_whenStreamOneElementShorter_thenCorrect() {
 
-
-        String abc = "abc";
-
-
-
-        List<String> list = Arrays.asList("abc1", "abc2", "abc3");
-
-        long size = list.stream().skip(1)
+        List<String> expected = asList("abc1", "abc2", "abc3");
+        long actual = expected.stream().skip(1)
                 .map(element -> element.substring(0, 3)).count();
 
-        assertEquals(list.size() - 1, size);
+        assertEquals(expected.size() - 1, actual);
+    }
+
+    @Test
+    public void convertStringToUpperCaseStreams() {
+        List<String> expected = asList("A", "B", "HELLO");
+        List<String> actual = Stream.of("a", "b", "hello")
+                .map(String::toUpperCase)
+                .collect(Collectors.toList());
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testflatMap() throws Exception {
+        List<Integer> together = Stream.of(asList(1, 2), asList(3, 4))
+                // Stream of List<Integer>
+                .flatMap(List::stream)
+                .map(integer -> integer + 1)
+                .collect(Collectors.toList());
+        assertEquals(asList(2, 3, 4, 5), together);
     }
 
     @Test
     public void checkOrder_whenChangeQuantityOfMethodCalls_thenCorrect() {
 
-        List<String> list = Arrays.asList("abc1", "abc2", "abc3");
+        List<String> list = asList("abc1", "abc2", "abc3");
 
         counter = 0;
         long sizeFirst = list.stream().skip(2).map(element -> {
@@ -75,6 +87,7 @@ public class Java8StreamApiUnitTest {
 
         counter = 0;
         long sizeSecond = list.stream().map(element -> {
+
             wasCalled();
             return element.substring(0, 3);
         }).skip(2).count();
@@ -95,7 +108,7 @@ public class Java8StreamApiUnitTest {
     @Test
     public void createStream_whenCreated_thenCorrect() {
 
-        Collection<String> collection = Arrays.asList("a", "b", "c");
+        Collection<String> collection = asList("a", "b", "c");
         Stream<String> streamOfCollection = collection.stream();
         assertEquals(3, streamOfCollection.count());
 
@@ -126,7 +139,6 @@ public class Java8StreamApiUnitTest {
         try {
             streamOfStrings = Files.lines(path, Charset.forName("UTF-8"));
         } catch (IOException e) {
-            log.error("Error creating streams from paths {}", path, e.getMessage(), e);
         }
         assertEquals("a", streamOfStrings.findFirst().get());
 
@@ -143,12 +155,10 @@ public class Java8StreamApiUnitTest {
     @Test
     public void runStreamPipeline_whenOrderIsRight_thenCorrect() {
 
-        List<String> list = Arrays.asList("abc1", "abc2", "abc3");
+        List<String> list = asList("abc1", "abc2", "abc3");
         Optional<String> stream = list.stream().filter(element -> {
-            log.info("filter() was called");
             return element.contains("2");
         }).map(element -> {
-            log.info("map() was called");
             return element.toUpperCase();
         }).findFirst();
     }
@@ -163,13 +173,11 @@ public class Java8StreamApiUnitTest {
         assertEquals(16, reducedTwoParams);
 
         int reducedThreeParams = Stream.of(1, 2, 3).reduce(10, (a, b) -> a + b, (a, b) -> {
-            log.info("combiner was called");
             return a + b;
         });
         assertEquals(16, reducedThreeParams);
 
-        int reducedThreeParamsParallel = Arrays.asList(1, 2, 3).parallelStream().reduce(10, (a, b) -> a + b, (a, b) -> {
-            log.info("combiner was called");
+        int reducedThreeParamsParallel = asList(1, 2, 3).parallelStream().reduce(10, (a, b) -> a + b, (a, b) -> {
             return a + b;
         });
         assertEquals(36, reducedThreeParamsParallel);
@@ -204,11 +212,11 @@ public class Java8StreamApiUnitTest {
 
     }
 
-    @Test(expected = UnsupportedOperationException.class)
-    public void collect_whenThrows_thenCorrect() {
-        Set<Product> unmodifiableSet = productList.stream().collect(Collectors.collectingAndThen(Collectors.toSet(), Collections::unmodifiableSet));
-        unmodifiableSet.add(new Product(4, "tea"));
-    }
+    // @Test(expected = UnsupportedOperationException.class)
+    //public void collect_whenThrows_thenCorrect() {
+    //    Set<Product> unmodifiableSet = productList.stream().collect(Collectors.collectingAndThen(Collectors.toSet(), Collections::unmodifiableSet));
+    //    unmodifiableSet.add(new Product(4, "tea"));
+    // }
 
     @Test
     public void customCollector_whenResultContainsAllElementsFrSource_thenCorrect() {
@@ -249,13 +257,11 @@ public class Java8StreamApiUnitTest {
         try {
             path = Files.createTempFile(null, ".txt");
         } catch (IOException e) {
-            log.error(e.getMessage());
         }
 
         try (BufferedWriter writer = Files.newBufferedWriter(path)) {
             writer.write("a\nb\nc");
         } catch (IOException e) {
-            log.error(e.getMessage());
         }
         return path;
     }
