@@ -32,18 +32,19 @@ public final class Address<A,B,C> {
                 c;
     }
 
-    public @NotNull B getAddressLine() {
+    public @NotNull A getAttribute() {
+        return a; }
+
+    public @NotNull B getBttribute() {
         return b; }
 
-    public @NotNull C getCity() {
-        return c; }
-
-    public  @NotNull Optional<? extends C> getPostcode() {
+    public  @NotNull Optional<? extends C> getCttribute() {
         return Optional.ofNullable(c);
     }
 
     public static <T> @NotNull Optional<? super T> findAddress(
             @Nullable T t) {
+
         return Optional.ofNullable(t);
     }
 }

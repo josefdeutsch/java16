@@ -7,20 +7,25 @@ import com.java.pattern.generics.Phone;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.OptionalInt;
+import java.util.stream.IntStream;
+
+import static org.junit.Assert.assertEquals;
 
 @SuppressWarnings("unchecked")
 public class Main {
 
     public static void main(String[] args) {
-        Address address =
-                new Address(
-                        null,
-                        "uschi",
-                        null);
 
-        System.out.println(address.getAddressLine());
-        System.out.println(address.getCity());
-        System.out.println(address.getPostcode());
+        OptionalInt reduced = IntStream.range(1, 4).reduce((a, b) -> a + b);
+        System.out.println(reduced.getAsInt());
+
+        int reducedTwoParams =
+                IntStream.range(1, 4).reduce(10, (a, b) -> a + b);
+        assertEquals(16, reducedTwoParams);
+
+
 
     }
 }
