@@ -1,7 +1,9 @@
 package com.java.pattern.db;
 
 import com.java.pattern.db.model.Detail;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -9,14 +11,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertTrue;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class Java8StreamUnitTest {
 
     private List<String> list;
 
-    @Before
+    @BeforeAll
     public void init() {
         list = new ArrayList<>();
         list.add("One");
@@ -32,7 +34,7 @@ public class Java8StreamUnitTest {
         list.add("");
     }
 
-    @org.junit.Test
+    @Test
     public void assertThat_Array_into_Stream_hasSize_equalTo() {
 
         String[] arr = new String[] { "a", "b", "c" };
@@ -40,27 +42,27 @@ public class Java8StreamUnitTest {
         assertEquals(3, actual);
 
     }
-    @org.junit.Test
+    @Test
     public void assertThat_StreamOf_hasSize_equalTo() {
 
         Stream<String> actual = Stream.of("a", "b", "c");
         assertEquals(3, actual);
     }
 
-    @org.junit.Test
+    @Test
     public void assertThat_List_into_Steam_hasDistinct_size_equalTo() {
 
         long actual = list.stream().distinct().count();
         assertEquals(9, actual);
     }
 
-    @org.junit.Test
+    @Test
     public void assertThat_List_into_Stream_hasConditional_equalTo() {
         Stream<String> actual = list.stream().filter(element -> element.isEmpty());
         assertEquals(2, actual.count());
     }
 
-    @org.junit.Test
+    @Test
     public void assertThat_List_into_Stream_maps_Uri_into_get_hasSize_equaTo() {
 
         List<String> uris = new ArrayList<>();
@@ -70,7 +72,7 @@ public class Java8StreamUnitTest {
 
     }
 
-    @org.junit.Test
+    @Test
     public void assertThat_ListA_into_Stream_flatMaps_ListB_hasSize_equalTo() {
 
         List<Detail> listA = new ArrayList<>();
@@ -81,7 +83,7 @@ public class Java8StreamUnitTest {
         assertEquals(actual.count(), 4);
     }
 
-    @org.junit.Test
+    @Test
     public void assertThat_ListA_into_Stream_hasAnyMatch() {
 
         boolean actual = list.stream().anyMatch(element -> element.contains("h"));
@@ -89,7 +91,7 @@ public class Java8StreamUnitTest {
 
     }
 
-    @org.junit.Test
+    @Test
     public void assertThat_ListA_into_Stream_does_not_contain_specified_item() {
 
         boolean actual = list.stream().allMatch(element -> element.contains("h"));
@@ -97,7 +99,7 @@ public class Java8StreamUnitTest {
 
     }
 
-    @org.junit.Test
+    @Test
     public void assertThat_ListA_into_Stream_does_not_contain_nothing() {
 
         boolean actual = list.stream().noneMatch(element -> element.contains("h"));
@@ -105,7 +107,7 @@ public class Java8StreamUnitTest {
 
     }
 
-    @org.junit.Test
+    @Test
     public void assertThat_List_into_Stream_reduce_Value_equalTo() {
 
         List<Integer> integers = new ArrayList<>();
@@ -117,7 +119,7 @@ public class Java8StreamUnitTest {
 
     }
 
-    @org.junit.Test
+    @Test
     public void assertThat_List_into_Stream_maps_element_intoUpperCase_collect_toList_hasSize_EqualTo() {
 
         List<String> resultList = list.stream().map(element -> element.toUpperCase()).collect(Collectors.toList());
@@ -125,7 +127,7 @@ public class Java8StreamUnitTest {
 
     }
 
-    @org.junit.Test
+    @Test
     public void assertThat_List_into_Stream_maps_element_intoUpperCase_collect_toList_hasConditional() {
 
         List<String> resultList = list.stream().map(element -> element.toUpperCase()).collect(Collectors.toList());
@@ -133,7 +135,7 @@ public class Java8StreamUnitTest {
 
     }
 
-    @org.junit.Test
+    @Test
     public void checkParallelStream_whenDoWork() {
 
         list.parallelStream().forEach(element -> doWork(element));

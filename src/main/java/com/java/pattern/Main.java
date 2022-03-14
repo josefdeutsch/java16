@@ -1,31 +1,28 @@
 package com.java.pattern;
 
-import com.java.pattern.db.optional.Address;
-import com.java.pattern.generics.Box;
-import com.java.pattern.generics.Letter;
-import com.java.pattern.generics.Phone;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.OptionalInt;
+import java.math.BigInteger;
+import java.util.Random;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
-
-import static org.junit.Assert.assertEquals;
+import java.util.stream.Stream;
 
 @SuppressWarnings("unchecked")
 public class Main {
 
     public static void main(String[] args) {
+        int[] arr = new int[10];
 
-        OptionalInt reduced = IntStream.range(1, 4).reduce((a, b) -> a + b);
-        System.out.println(reduced.getAsInt());
-
-        int reducedTwoParams =
-                IntStream.range(1, 4).reduce(10, (a, b) -> a + b);
-        assertEquals(16, reducedTwoParams);
-
-
-
+        IntStream
+                .range(0, arr.length)
+                .map(i -> {
+            int[] a = new int[10];
+            int[] b = new int[10];
+            return a[i] * b[i];
+        }).forEach(System.out::println);
     }
+
+
 }
