@@ -254,82 +254,87 @@ public class Java8StreamApiUnitTest {
     @Test
     public void assertThat_isInstanceOf_List() {
 
-        List<String> collectorCollection = productList.stream()
+        List<String> actual = productList.stream()
                 .map(Product::getName)
                 .collect(Collectors.toList());
-        assertTrue(collectorCollection instanceof List);
+        assertTrue(actual instanceof List);
 
     }
 
     @Test
     public void assertThat_Stream_into_Collector_hasSize_equalTo() {
 
-        List<String> collectorCollection = productList.stream()
+        List<String> actual = productList.stream()
                 .map(Product::getName)
                 .collect(Collectors.toList());
-        assertEquals(5, collectorCollection.size());
+        assertEquals(5, actual.size());
 
     }
+
     @Test
     public void asserThat_Stream_intoCollector_hasRegex() {
 
-        String listToString = productList.stream()
+        String actual = productList.stream()
                 .map(Product::getName)
                 .collect(Collectors.joining(", ", "[", "]"));
 
-        assertTrue(listToString.contains(",")
-                && listToString.contains("[")
-                && listToString.contains("]"));
+        assertTrue(actual.contains(",")
+                && actual.contains("[")
+                && actual.contains("]"));
 
     }
+
     @Test
     public void asserThat_Stream_intoCollector_hasAverageInt() {
 
-        double averagePrice =
+        double actual =
                 productList.stream()
                         .collect(Collectors.averagingInt(Product::getPrice));
-        assertTrue(17.2 == averagePrice);
+        assertTrue(17.2 == actual);
 
     }
+
     @Test
     public void asserThat_Stream_intoCollector_isSumOf() {
 
-        int summingPrice =
+        int actual =
                 productList.stream()
                         .collect(Collectors.summingInt(Product::getPrice));
-        assertEquals(86, summingPrice);
+        assertEquals(86, actual);
 
     }
+
     @Test
     public void asserThat_Stream_intoCollector_isSummarizingInt() {
 
-        IntSummaryStatistics statistics =
+        IntSummaryStatistics actual =
                 productList.stream()
                         .collect(Collectors.summarizingInt(Product::getPrice));
-        assertEquals(23, statistics.getMax());
+        assertEquals(23, actual.getMax());
 
     }
+
     @Test
     public void asserThat_Stream_intoCollector_isGroupedBy_EqualTo() {
 
-        Map<Integer, List<Product>> collectorMapOfLists =
+        Map<Integer, List<Product>> actual =
                 productList.stream()
                 .collect(Collectors.groupingBy(Product::getPrice));
 
-        assertEquals(3, collectorMapOfLists.keySet().size());
+        assertEquals(3, actual.keySet().size());
 
     }
+
     @Test
     public void asserThat_Stream_intoCollector_isPartition_EqualTo() {
 
-        Map<Boolean, List<Product>> mapPartioned =
+        Map<Boolean, List<Product>> actual =
                 productList.stream().
                         collect(Collectors.partitioningBy(element -> element.getPrice() > 15));
 
-        assertEquals(2, mapPartioned.keySet().size());
+        assertEquals(2, actual.keySet().size());
 
     }
-
 
     @Test
     public void customCollector_whenResultContainsAllElementsFrSource_thenCorrect() {
@@ -340,11 +345,11 @@ public class Java8StreamApiUnitTest {
                                             return first;
                                     }
        );
-        LinkedList<Product> linkedListOfPersons = productList.stream().collect(toLinkedList);
-        assertTrue(linkedListOfPersons.containsAll(productList));
+        LinkedList<Product> actual = productList.stream().collect(toLinkedList);
+        assertTrue(actual.containsAll(productList));
     }
 
-    @Test
+   /* @Test
     public void parallelStream_whenWorks_thenCorrect() {
         Stream<Product> streamOfCollection = productList.parallelStream();
         boolean isParallel = streamOfCollection.isParallel();
@@ -366,6 +371,6 @@ public class Java8StreamApiUnitTest {
         boolean isParallel = intStreamParallel.isParallel();
         assertFalse(isParallel);
     }
-
+*/
 
 }
